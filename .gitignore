@@ -1,0 +1,11 @@
+# IDE
+**/.vscode
+
+# TERRAFORM
+**/.terraform
+**/*.tfstate
+**/*.tfstate.backup
+**/*.lock.hcl
+
+# KEYS
+**/keys/*
