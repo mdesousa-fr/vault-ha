@@ -9,3 +9,7 @@
 
 # KEYS
 **/keys/*
+!**/keys/.gitkeep
+
+# ANSIBLE
+**/ansible/inventory

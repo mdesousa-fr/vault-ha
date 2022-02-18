@@ -1,0 +1,4 @@
+---
+- name: Connectivity test
+  ping:
+    data: "pong"
