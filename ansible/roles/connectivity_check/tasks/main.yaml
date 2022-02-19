@@ -2,3 +2,7 @@
 - name: Connectivity test
   ping:
     data: "pong"
+
+# - name: Print all available facts
+#   ansible.builtin.debug:
+#     var: ansible_facts.default_ipv4.address
