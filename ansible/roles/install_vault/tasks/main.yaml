@@ -1,0 +1,76 @@
+---
+- name: Install packages
+  ansible.builtin.apt:
+    pkg:
+    - unzip
+    update_cache: yes
+    state: present
+
+- name: Download Vault binary
+  ansible.builtin.get_url:
+    url: https://releases.hashicorp.com/vault/1.9.3/vault_1.9.3_linux_amd64.zip
+    dest: /tmp
+
+- name: Unzip binary
+  ansible.builtin.unarchive:
+    src: /tmp/vault_1.9.3_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Create filesystem
+  community.general.filesystem:
+    dev: /dev/sdb
+    fstype: ext4
+    resizefs: yes
+    state: present
+
+- name: Mount filesystem
+  ansible.posix.mount:
+    path: /mnt/vault
+    src: /dev/sdb
+    fstype: ext4
+    state: present
+
+- name: Create Vault data directory
+  ansible.builtin.file:
+    path: /mnt/vault/data
+    state: directory
+    mode: "0755"
+
+- name: Copy Vault configuration
+  ansible.builtin.copy:
+    src: config.hcl
+    dest: /mnt/vault/
+
+- name: Custom Vault configuration with public IP address
+  ansible.builtin.replace:
+    path: /mnt/vault/config.hcl
+    regexp: __SERVER_PUBLIC_IP__
+    replace: "{{ inventory_hostname }}"
+
+- name: Custom Vault configuration with private IP address
+  ansible.builtin.replace:
+    path: /mnt/vault/config.hcl
+    regexp: __SERVER_PRIVATE_IP__
+    replace: "{{ ansible_facts.default_ipv4.address }}"
+
+- name: Custom Vault configuration with hostname
+  ansible.builtin.replace:
+    path: /mnt/vault/config.hcl
+    regexp: __SERVER_NAME__
+    replace: "{{ ansible_facts.hostname }}"
+
+- name: Copy Vault service
+  ansible.builtin.copy:
+    src: vault.service
+    dest: /etc/systemd/system/
+
+- name: Start Vault Server
+  ansible.builtin.systemd:
+    name: vault
+    daemon_reload: yes
+    state: restarted
+
+# TODO: configure Vault
+# https://learn.hashicorp.com/tutorials/vault/getting-started-deploy
+# https://learn.hashicorp.com/tutorials/vault/raft-storage?in=vault/raft
