@@ -74,6 +74,6 @@ resource "google_compute_firewall" "vault-firewall" {
     source_ranges = [ "0.0.0.0/0" ]
     allow {
         protocol = "tcp"
-        ports = [ "22", "8200" ]
+        ports = [ "22", "8200", "8201" ]
     }
 }

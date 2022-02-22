@@ -13,3 +13,9 @@
 
 # ANSIBLE
 **/ansible/inventory
+
+# VAULT
+**/vault/*.json
+
+#OTHERS
+**/*.tmp

@@ -70,7 +70,3 @@
     name: vault
     daemon_reload: yes
     state: restarted
-
-# TODO: configure Vault
-# https://learn.hashicorp.com/tutorials/vault/getting-started-deploy
-# https://learn.hashicorp.com/tutorials/vault/raft-storage?in=vault/raft
