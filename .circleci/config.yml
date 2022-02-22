@@ -23,7 +23,6 @@ jobs:
       - run:
           name: "Copy keys"
           command: |
-            mkdir keys
             echo $VAULT_SSH_PUBLIC_KEY > /root/project/keys/id_rsa.pub
             echo $GCP_SERVICE_ACCOUNT > /root/project/keys/gcp_sa.json
       - run:
